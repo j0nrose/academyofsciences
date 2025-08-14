@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Academy of Sciences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .header-scrolled {
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #fbbf24;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fbbf24;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%2315803d" width="1200" height="800"/><circle fill="%2334d399" cx="300" cy="200" r="150" opacity="0.3"/><circle fill="%2334d399" cx="900" cy="400" r="200" opacity="0.2"/><circle fill="%2334d399" cx="600" cy="600" r="100" opacity="0.4"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3a8a;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: #fbbf24;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Exhibitions Grid */
+        .exhibitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .exhibition-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .exhibition-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            height: 200px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .learn-more {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .learn-more:hover {
+            color: #1e40af;
+        }
+
+        /* About Section */
+        .about {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Visit Section */
+        .visit {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            text-align: center;
+        }
+
+        .visit-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-card h3 {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fbbf24;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1rem;
+            color: #9ca3af;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #1e3a8a;
+                flex-direction: column;
+                padding: 1rem 2rem;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .exhibitions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .cta-button {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <a href="#home" class="logo">California Academy of Sciences</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#exhibitions">Exhibitions</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#visit">Visit</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Explore, Explain, Sustain Life</h1>
+                <p>Discover the wonders of our natural world through cutting-edge research, immersive exhibits, and groundbreaking conservation efforts.</p>
+                <a href="#exhibitions" class="cta-button">Explore Now</a>
+            </div>
+        </section>
+
+        <section id="exhibitions">
+            <h2 class="section-title fade-in">Current Exhibitions</h2>
+            <div class="exhibitions-grid">
+                <div class="exhibition-card fade-in">
+                    <div class="card-image">Rainforest Dome</div>
+                    <div class="card-content">
+                        <h3>Rainforest of the World</h3>
+                        <p>Journey through four stories of rainforest life, from the Amazon floor to the canopy, featuring live animals and exotic plants.</p>
+                        <a href="#" class="learn-more">Learn More →</a>
+                    </div>
+                </div>
+                <div class="exhibition-card fade-in">
+                    <div class="card-image">Aquarium</div>
+                    <div class="card-content">
+                        <h3>Steinhart Aquarium</h3>
+                        <p>Dive into aquatic ecosystems from around the globe, including a coral reef, swamp, and tidepool touchable exhibit.</p>
+                        <a href="#" class="learn-more">Learn More →</a>
+                    </div>
+                </div>
+                <div class="exhibition-card fade-in">
+                    <div class="card-image">Planetarium</div>
+                    <div class="card-content">
+                        <h3>Morrison Planetarium</h3>
+                        <p>Experience the universe like never before in our state-of-the-art digital dome theater with immersive shows.</p>
+                        <a href="#" class="learn-more">Learn More →</a>
+                    </div>
+                </div>
+                <div class="exhibition-card fade-in">
+                    <div class="card-image">Natural History</div>
+                    <div class="card-content">
+                        <h3>Natural History Museum</h3>
+                        <p>Explore Earth's history through fossils, gems, and interactive displays showcasing evolution and biodiversity.</p>
+                        <a href="#" class="learn-more">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2 class="section-title fade-in">About Our Mission</h2>
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <p>The California Academy of Sciences is a world-class research institution and natural history museum dedicated to exploring, explaining, and sustaining life on Earth. Founded in 1853, we are one of the largest museums of natural history in the world.</p>
+                    <p>Our scientists work on the frontlines of discovery, conducting groundbreaking research in biodiversity, evolution, and conservation. Through our exhibits, educational programs, and public outreach, we inspire millions of visitors annually to become engaged stewards of our planet.</p>
+                </div>
+                <div class="about-stats fade-in">
+                    <div class="stat-card">
+                        <div class="stat-number">46M+</div>
+                        <div class="stat-label">Specimens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Scientists</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1.5M+</div>
+                        <div class="stat-label">Annual Visitors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">170</div>
+                        <div class="stat-label">Years of Discovery</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="visit" class="visit">
+            <h2 class="section-title">Plan Your Visit</h2>
+            <div class="visit-info">
+                <div class="info-card fade-in">
+                    <h3>Hours & Admission</h3>
+                    <p>Monday - Saturday: 9:30 AM - 5:00 PM</p>
+                    <p>Sunday: 11:00 AM - 5:00 PM</p>
+                    <p>General Admission: $39.95</p>
+                    <p>Members & Children under 4: Free</p>
+                </div>
+                <div class="info-card fade-in">
+                    <h3>Location</h3>
+                    <p>55 Music Concourse Drive</p>
+                    <p>Golden Gate Park</p>
+                    <p>San Francisco, CA 94118</p>
+                    <p>Public transit accessible</p>
+                </div>
+                <div class="info-card fade-in">
+                    <h3>Special Events</h3>
+                    <p>NightLife (21+) - Thursday evenings</p>
+                    <p>Science in the City - Monthly</p>
+                    <p>Family programs - Weekends</p>
+                    <p>Behind-the-scenes tours available</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Visit</h4>
+                <p><a href="#">Plan Your Visit</a></p>
+                <p><a href="#">Tickets & Membership</a></p>
+                <p><a href="#">Group Visits</a></p>
+                <p><a href="#">Accessibility</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Learn</h4>
+                <p><a href="#">Educational Programs</a></p>
+                <p><a href="#">Teacher Resources</a></p>
+                <p><a href="#">Research & Collections</a></p>
+                <p><a href="#">Publications</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <p><a href="#">Become a Member</a></p>
+                <p><a href="#">Donate</a></p>
+                <p><a href="#">Volunteer</a></p>
+                <p><a href="#">Corporate Partners</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <p><a href="#">Newsletter</a></p>
+                <p><a href="#">Social Media</a></p>
+                <p><a href="#">Contact Us</a></p>
+                <p><a href="#">Media & Press</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 California Academy of Sciences. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                const headerHeight = document.getElementById('header').offsetHeight;
+                const targetPosition = target.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            
+            // Animate hamburger
+            const spans = hamburger.querySelectorAll('span');
+            if (navLinks.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(-45deg) translate(-5px, 6px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(45deg) translate(-5px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                const spans = hamburger.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add hover effects to exhibition cards
+        document.querySelectorAll('.exhibition-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add click animation to CTA button
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create ripple effect
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                left: ${x}px;
+                top: ${y}px;
+                width: ${size}px;
+                height: ${size}px;
+            `;
+            
+            this.appendChild(ripple);
+            
+            // Remove ripple after animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+            
+            // Scroll to exhibitions section
+            setTimeout(() => {
+                document.getElementById('exhibitions').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }, 300);
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            .cta-button {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Counter animation for stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200; // Lower is faster
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = parseInt(counter.getAttribute('data-target') || counter.innerText.replace(/\D/g, ''));
+                    const count = parseInt(counter.innerText.replace(/\D/g, '')) || 0;
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc).toLocaleString();
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = counter.innerText;
+                    }
+                };
+
+                // Set data-target attribute
+                counter.setAttribute('data-target', counter.innerText.replace(/\D/g, ''));
+                counter.innerText = '0';
+                
+                // Start animation when element is visible
+                const statsObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCount();
+                            statsObserver.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                statsObserver.observe(counter);
+            });
+        }
+
+        // Initialize counter animation
+        animateCounters();
+    </script>
+</body>
+</html>
